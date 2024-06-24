@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the path to panel.conf
-PANEL_CONF="/path/to/your/panel.conf"  # Replace with the actual path to panel.conf
+PANEL_CONF="/home/sparky/.config/lxqt/panel.conf"  # Replace with the actual path to panel.conf
 
 # Define the path to SparkyBotMini.desktop
 SPARKYBOT_DESKTOP="/home/sparky/SparkyBotMini.desktop"
