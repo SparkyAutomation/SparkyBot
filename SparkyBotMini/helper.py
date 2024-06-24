@@ -11,7 +11,7 @@ class SpeedGauge(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMinimumSize(500, 500)
+        self.setMinimumSize(420, 420)
         self.value = -67
         self.min_value = 0
         self.max_value = 100
@@ -19,7 +19,7 @@ class SpeedGauge(QWidget):
 
         self.base_speed_label = QLabel(self)
         self.base_speed_label.setAlignment(Qt.AlignCenter)
-        self.base_speed_label.setGeometry(120, 430, 250, 50)
+        self.base_speed_label.setGeometry(90, 405, 250, 50)
         self.base_speed_label.setStyleSheet("QLabel { font-size: 40px; color: black; }")
 
     def set_value(self, value):
@@ -178,16 +178,16 @@ class MainWindow(QWidget):
         layout = QHBoxLayout(self)
         self.speed_gauge = SpeedGauge()
         layout.addWidget(self.speed_gauge)
-        layout.addSpacing(100)
+        layout.addSpacing(40)
 
         controls_layout = QVBoxLayout()
 
         slider_group_layout = QHBoxLayout()
 
         self.mode_label = QLabel("Manual Mode")
-        self.mode_label.setAlignment(Qt.AlignCenter)
+        self.mode_label.setAlignment(Qt.AlignLeft)
         self.mode_label.setStyleSheet("QLabel { font-size: 40px; font-weight: bold; color: #fff; } ")
-        self.mode_label.setFixedWidth(320)
+        self.mode_label.setFixedWidth(350)
         slider_group_layout.addWidget(self.mode_label)
 
         self.mode_slider = QSlider(Qt.Horizontal)
@@ -215,7 +215,7 @@ class MainWindow(QWidget):
             }
         """)
         self.on_off_button.setMinimumHeight(100)
-        self.on_off_button.setFixedWidth(320)
+        self.on_off_button.setFixedWidth(350)
         controls_layout.addWidget(self.on_off_button)
 
         layout.addLayout(controls_layout)
