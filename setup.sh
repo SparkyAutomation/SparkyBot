@@ -20,4 +20,4 @@ NEXT_INDEX=$((SIZE + 1))
 echo "apps\\$NEXT_INDEX\\desktop=$SPARKYBOT_DESKTOP" >> "$PANEL_CONF"
 echo "apps\\size=$((SIZE + 1))" >> "$PANEL_CONF"
 
-echo "App added to panel.conf."
+echo "App added to panel."
