@@ -21,14 +21,15 @@ if [ -z "$CURRENT_SIZE" ]; then
     exit 1
 fi
 
-# Calculate the new size
+# Calculate the next index and new size
 NEW_SIZE=$((CURRENT_SIZE + 1))
 
 # Define the new entry
-NEW_ENTRY="apps\\$NEW_SIZE\\desktop=$SPARKYBOT_DESKTOP"
+NEW_ENTRY="apps\\\\$NEW_SIZE\\\\desktop=$SPARKYBOT_DESKTOP"
 
 # Use sed to insert the new entry before the pattern and update the size
-sed -i "/apps\\\\size=$NEW_SIZE/i $NEW_ENTRY" "$PANEL_CONF"
-sed -i "s/apps\\\\size=$NEW_SIZE/apps\\\\size=$NEW_SIZE/" "$PANEL_CONF"
+sed -i "/apps\\\\size=$CURRENT_SIZE/i $NEW_ENTRY" "$PANEL_CONF"
+sed -i "s/apps\\\\size=$CURRENT_SIZE/apps\\\\size=$NEW_SIZE/" "$PANEL_CONF"
 
-echo "New entry added as apps\\$NEW_SIZE\\desktop added."
+echo "New entry added as apps\\\\$NEW_SIZE\\\\desktop and size updated to $NEW_SIZE in $PANEL_CONF."
+
