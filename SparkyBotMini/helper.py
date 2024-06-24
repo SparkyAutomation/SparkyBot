@@ -173,7 +173,7 @@ class MainWindow(QWidget):
 
     def init_ui(self):
         self.setWindowTitle('SparkyBot Mini GUI')
-        self.setFixedSize(1024, 600)
+        self.setFixedSize(1024-160, 600)
 
         layout = QHBoxLayout(self)
         self.speed_gauge = SpeedGauge()
