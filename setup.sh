@@ -22,4 +22,4 @@ echo "apps\\$NEXT_INDEX\\desktop=$SPARKYBOT_DESKTOP" >> "$PANEL_CONF"
 # Update apps\size to reflect the new total number of apps
 echo "apps\\size=$((SIZE + 1))" >> "$PANEL_CONF"
 
-echo "App added to panel.conf."
+echo "App added to panel"
