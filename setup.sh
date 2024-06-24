@@ -1,20 +1,17 @@
-PANEL_CONF="$HOME/.config/lxqt/panel.conf"
-DESKTOP_FILE="/home/sparky/SparkyBotMini/SparkyBotMini.desktop"
+#!/bin/bash
 
-# Ensure the file exists before making changes
-if [ -f "$PANEL_CONF" ]; then
-    # Check if the entry already exists to avoid duplicates
-    if ! grep -q "apps\\1\\desktop=$DESKTOP_FILE" "$PANEL_CONF"; then
-        # Append the new entry to [quick launch] section
-        echo -e "\n[quick launch]" >> "$PANEL_CONF"
-        echo "alignment=Left" >> "$PANEL_CONF"
-        echo "apps\\1\\desktop=$DESKTOP_FILE" >> "$PANEL_CONF"
-        echo "apps\\size=1" >> "$PANEL_CONF"
-        echo "type=quicklaunch" >> "$PANEL_CONF"
-        echo "Panel configuration updated successfully."
-    else
-        echo "Entry already exists in panel.conf."
-    fi
-else
-    echo "Panel configuration file not found: $PANEL_CONF"
-fi
+# Define the path to the panel.conf file
+panel_conf="/home/sparky/.config/lxqt/panel.conf"
+# Define the path to SparkyBotMini.desktop
+SPARKYBOT_DESKTOP="/home/sparky/SparkyBotMini.desktop"
+
+
+# Count the number of existing apps in quicklaunch
+SIZE=$(grep -oP 'apps\\\d+' "$PANEL_CONF" | wc -l)
+NEXT_INDEX=$((SIZE + 1))
+
+# Add SparkyBotMini.desktop to panel.conf
+echo "apps\\$NEXT_INDEX\\desktop=$SPARKYBOT_DESKTOP" >> "$PANEL_CONF"
+echo "apps\\size=$((SIZE + 1))" >> "$PANEL_CONF"
+
+echo "App added to panel"
