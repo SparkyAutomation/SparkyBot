@@ -1,6 +1,28 @@
 #!/bin/bash
 
-# Function add APP to panel
+# Download files
+download_files() {
+    local DIR="$1"
+    local urls=(
+        "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/SparkyBotMini/helper.py"
+        "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/SparkyBotMini/main.py"
+        "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/SparkyBotMini/styles.py"
+        "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/SparkyBotMini/sparky_icon.png"
+        "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/SparkyBotMini/SparkyBotMini.desktop"
+    )
+
+    # Create the directory if it doesn't exist
+    mkdir -p "$DIR"
+
+    # Download files and adjust permissions
+    for url in "${urls[@]}"; do
+        filename=$(basename "$url")
+        sudo wget -O "$DIR/$filename" "$url"
+        sudo chmod a+rw "$DIR/$filename"  # Set read and write permissions for all
+    done
+}
+
+# Add APP to panel
 add_app_to_panel() {
     local app_path="$1"
 
@@ -41,4 +63,6 @@ add_app_to_panel() {
 }
 
 # Main program
+download_files "$HOME/SparkyBotMini"
 add_app_to_panel "$HOME/SparkyBotMini/SparkyBotMini.desktop"
+
