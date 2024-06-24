@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define the path to panel.conf
-PANEL_CONF="/home/sparky/.config/lxqt/panel.conf"  # Replace with the actual path to panel.conf
+PANEL_CONF="$HOME/.config/lxqt/panel.conf"
 
 # Define the path to SparkyBotMini.desktop
-SPARKYBOT_DESKTOP="/home/sparky/SparkyBotMini.desktop"
+SPARKYBOT_DESKTOP="$HOME/SparkyBotMini.desktop"
 
 # Check if panel.conf exists
 if [ ! -f "$PANEL_CONF" ]; then
@@ -12,14 +12,23 @@ if [ ! -f "$PANEL_CONF" ]; then
     exit 1
 fi
 
-# Count the number of existing apps in quicklaunch
-SIZE=$(grep -oP 'apps\\[0-9]+' "$PANEL_CONF" | tail -n 1 | cut -d'\' -f2)
-NEXT_INDEX=$((SIZE + 1))
+# Find the current apps size
+CURRENT_SIZE=$(grep -oP 'apps\\size=\K[0-9]+' "$PANEL_CONF")
 
-# Add SparkyBotMini.desktop after the existing apps in panel.conf
-echo "apps\\$NEXT_INDEX\\desktop=$SPARKYBOT_DESKTOP" >> "$PANEL_CONF"
+# Check if the size was found
+if [ -z "$CURRENT_SIZE" ]; then
+    echo "Error: apps size not found in $PANEL_CONF"
+    exit 1
+fi
 
-# Update apps\size to reflect the new total number of apps
-sed -i "s/apps\\size=$SIZE/apps\\size=$NEXT_INDEX/" "$PANEL_CONF"
+# Calculate the new size
+NEW_SIZE=$((CURRENT_SIZE + 1))
 
-echo "App added to panel.conf."
+# Define the new entry
+NEW_ENTRY="apps\\$NEW_SIZE\\desktop=$SPARKYBOT_DESKTOP"
+
+# Use sed to insert the new entry before the pattern and update the size
+sed -i "/apps\\\\size=$NEW_SIZE/i $NEW_ENTRY" "$PANEL_CONF"
+sed -i "s/apps\\\\size=$NEW_SIZE/apps\\\\size=$NEW_SIZE/" "$PANEL_CONF"
+
+echo "New entry added as apps\\$NEW_SIZE\\desktop added."
