@@ -13,13 +13,13 @@ if [ ! -f "$PANEL_CONF" ]; then
 fi
 
 # Count the number of existing apps in quicklaunch
-SIZE=$(grep -oP 'apps\\[0-9]+' "$PANEL_CONF" | wc -l)
+SIZE=$(grep -oP 'apps\\[0-9]+' "$PANEL_CONF" | tail -n 1 | cut -d'\' -f2)
 NEXT_INDEX=$((SIZE + 1))
 
 # Add SparkyBotMini.desktop after the existing apps in panel.conf
 echo "apps\\$NEXT_INDEX\\desktop=$SPARKYBOT_DESKTOP" >> "$PANEL_CONF"
 
 # Update apps\size to reflect the new total number of apps
-echo "apps\\size=$((SIZE + 1))" >> "$PANEL_CONF"
+sed -i "s/apps\\size=$SIZE/apps\\size=$NEXT_INDEX/" "$PANEL_CONF"
 
-echo "App added to panel"
+echo "App added to panel.conf."
