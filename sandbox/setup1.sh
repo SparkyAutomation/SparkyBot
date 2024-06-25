@@ -18,7 +18,10 @@ add_to_crontab() {
 # 3. Enable the autologin service
 sudo raspi-config nonint do_boot_behaviour B4 
 sudo systemctl enable lightdm.service
-sleep 2
+
+echo "##################################################################"
+echo "############################ Starting ############################"
+sleep 5
 
 # 4. Add script1 to crontab
 script1_path="$HOME/update_upgrade.sh" 
