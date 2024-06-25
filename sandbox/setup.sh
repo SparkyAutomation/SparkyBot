@@ -4,9 +4,9 @@
 sudo wget "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/sandbox/update_upgrade.sh"
 sudo wget "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/sandbox/install_desktop.sh"
 sudo wget "https://raw.githubusercontent.com/MechatronicsWhiz/SparkyBot/main/sandbox/config_desktop.sh"
-chmod +x update_upgrade.sh
-chmod +x install_desktop.sh
-chmod +x config_desktop.sh
+sudo chmod +x update_upgrade.sh
+sudo chmod +x install_desktop.sh
+sudo chmod +x config_desktop.sh
 
 # 2. Add a script to crontab
 add_to_crontab() {
