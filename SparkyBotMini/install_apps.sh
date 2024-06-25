@@ -59,7 +59,7 @@ add_app_to_panel() {
     lxqt-panel --exit
     lxqt-panel & 
 
-    echo "New entry added as apps\\\\$new_size\\\\desktop and size updated to $new_size in $panel_conf."
+    echo "App $new_entry installed"
 }
 
 # Main program
