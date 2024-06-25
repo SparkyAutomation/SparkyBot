@@ -3,7 +3,7 @@
 ################ Phase 2: Install desktop environment ################
 echo "##################################################################"
 echo "########################## Phase 2 done ##########################"
-sleep 2
+sleep 5
 
 script2_path="$HOME/install_desktop.sh"
 script3_path="$HOME/config_desktop.sh"
