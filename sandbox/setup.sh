@@ -14,7 +14,11 @@ add_to_crontab() {
     (crontab -l; echo "@reboot $script_path") | crontab -
 }
 
-# 3. Add script1 to crontab
+# 3. Enable the autologin service
+sudo raspi-config nonint do_boot_behaviour B4 
+sleep 2
+
+# 4. Add script1 to crontab
 script1_path="$HOME/update_upgrade.sh" 
 
 # Add script1 to crontab
