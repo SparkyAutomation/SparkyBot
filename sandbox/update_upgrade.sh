@@ -5,7 +5,7 @@ sudo apt-get upgrade -y
 
 echo "##################################################################"
 echo "########################## Phase 1 done ##########################"
-sleep 2
+sleep 5
 
 script1_path="$HOME/update_upgrade.sh"
 script2_path="$HOME/install_desktop.sh"
