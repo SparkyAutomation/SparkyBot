@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 ServiceTypes=LXQtPanel/Plugin
-Icon=/home/sparky/SparkyBotMini/sparky_icon.png
-Exec=/usr/bin/python3 /home/sparky/SparkyBotMini/main.py
+Icon=/home/Sparky/SparkyBotMini/sparky_icon.png
+Exec=/usr/bin/python3 /home/Sparky/SparkyBotMini/main.py
 Categories=Utility;
 Terminal=false
 Name=SparkyBotMini
