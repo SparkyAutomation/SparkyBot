@@ -62,7 +62,7 @@ add_app_to_panel() {
     echo "App $new_entry installed"
 }
 
-# Main program
+# Main program to download and install apps
 download_files "$HOME/SparkyBotMini"
 add_app_to_panel "$HOME/SparkyBotMini/SparkyBotMini.desktop"
 
