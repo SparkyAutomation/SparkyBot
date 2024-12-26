@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>SparkyBot Remote Controller</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #d8d8d8;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.2) 10%, transparent 10%),
+                              radial-gradient(circle, rgba(255,255,255,0.2) 10%, transparent 10%);
+            background-size: 20px 20px;
+            color: white;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition-duration: 0.4s;
+        }
+        .button:hover {
+            background-color: #d32f2f;
+        }
+        .arrow-button {
+            background-color: transparent;
+            border: none;
+            color: #4CAF50;
+            font-size: 30px;
+            cursor: pointer;
+            border-radius: 0;
+            transition-duration: 0.4s;
+            position: relative;
+            padding: 70px;
+        }
+        .arrow-button:hover {
+            color: #45a049;
+        }
+        .arrow-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 40px solid transparent;
+            transform: translate(-50%, -50%);
+        }
+        .left-arrow::before {
+            border-right: 120px solid currentColor;
+
+        }
+        .right-arrow::before {
+            border-left: 120px solid currentColor;
+        }
+        .up-arrow::before {
+            border-bottom: 120px solid currentColor;
+        }
+        .down-arrow::before {
+            border-top: 120px solid currentColor;
+        }
+
+	.up-left-arrow::before {
+	    border: 40px solid transparent; /* Adjusted border size */
+	    border-bottom: 120px solid #4CAF50;
+	    transform: translate(-50%, -50%) rotate(-45deg);
+	}
+
+	.up-right-arrow::before {
+	    border: 40px solid transparent; /* Adjusted border size */
+	    border-bottom: 120px solid #4CAF50;
+	    transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	.down-left-arrow::before {
+	    border: 40px solid transparent; /* Adjusted border size */
+	    border-top: 120px solid #4CAF50;
+	    transform: translate(-50%, -50%) rotate(45deg);
+	}
+
+	.down-right-arrow::before {
+	    border: 40px solid transparent; /* Adjusted border size */
+	    border-top: 120px solid #4CAF50;
+	    transform: translate(-50%, -50%) rotate(-45deg);
+	}
+
+
+        .stop-button {
+            width: 180px;
+            height: 180px;
+            background-color: #f44336;
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 50px;
+            margin: 20px 20px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+            -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+        }
+
+        .stop-button:hover {
+            background-color: #d32f2f;
+        }
+
+	.rotate-button {
+	    background-color: #2196F3;
+	    border: none;
+	    color: white;
+	    text-align: center;
+	    font-size: 16px;
+	    margin: 10px 16px;
+	    cursor: pointer;
+	    border-radius: 8px;
+	    transition-duration: 0.4s;
+	    width: 200px; /* Adjust width as needed */
+	    height: 40px; /* Adjust height as needed */
+	}
+
+	.rotate-button:hover {
+	    background-color: #0b7dda;
+	}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SparkyBot Remote Controller</h1>
+        <div class="row">
+            <img src="{{ url_for('video_feed') }}" style="width: 100%; max-width: 200px;">
+        </div>
+        <div class="row">
+            <button class="arrow-button up-left-arrow" onclick="sendCommand('/forward-left')"></button>
+            <button class="arrow-button up-arrow" onclick="sendCommand('/forward')"></button>
+            <button class="arrow-button up-right-arrow" onclick="sendCommand('/forward-right')"></button>
+        </div>
+        <div class="row">
+            <button class="arrow-button left-arrow" onclick="sendCommand('/left')"></button>
+            <button class="button stop-button" onclick="sendCommand('/stop')">Stop</button>
+            <button class="arrow-button right-arrow" onclick="sendCommand('/right')"></button>
+        </div>
+        <div class="row">
+            <button class="arrow-button down-left-arrow" onclick="sendCommand('/backward-left')"></button>
+            <button class="arrow-button down-arrow" onclick="sendCommand('/backward')"></button>
+            <button class="arrow-button down-right-arrow" onclick="sendCommand('/backward-right')"></button>
+        </div>
+        <div class="row">
+      	    <button class="rotate-button" onclick="sendCommand('/ccw')">Counterclockwise</button>
+     	    <button class="rotate-button" onclick="sendCommand('/cw')">Clockwise</button>
+    	</div>
+    </div>
+
+    <script>
+        function sendCommand(command) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', command, true);
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
