@@ -178,7 +178,6 @@ class RobotControlGUI(QWidget):
             sensor.calibrateImu()
             self.log("Hardware mode initialized")
         else:
-            self.stop_motors()
             sensor = None
             self.log("Switched to simulation mode")
 
@@ -259,6 +258,8 @@ class RobotControlGUI(QWidget):
         self.trajectory_line.set_data([], [])
         self.ax.set_title("")
         self.updatePlot()
+        if not self.simulation and hasattr(self.current_controller, 'stop_motors'):
+            self.current_controller.stop_motors()
         self.log("Stopped tracking. View reset, waypoints preserved.")
 
     # --- Hardware functions ---
@@ -272,25 +273,6 @@ class RobotControlGUI(QWidget):
         except Exception as e:
             self.log(f"Sensor error: {e}")
             return self.x, self.y, self.heading
-
-    def set_hw_motor(self, left_speed, right_speed):
-        if sb:
-            try:
-                sb.setMotor(2, -int(left_speed))
-                sb.setMotor(4, -int(left_speed))
-                sb.setMotor(1, -int(right_speed))
-                sb.setMotor(3, -int(right_speed))
-            except Exception as e:
-                self.log(f"Motor error: {e}")
-
-    def stop_motors(self):
-        if sb:
-            try:
-                for m in [1, 2, 3, 4]:
-                    sb.setMotor(m, 0)
-                self.log("Motors stopped.")
-            except Exception as e:
-                self.log(f"Motor stop error: {e}")
 
     def controlLoop(self):
         if not self.tracking_enabled or self.current_controller is None:
@@ -308,13 +290,11 @@ class RobotControlGUI(QWidget):
         if hasattr(self.current_controller, "control_step"):
             if self.simulation:
                 get_hw_pose = lambda: (self.x, self.y, self.heading)
-                set_hw_motor = lambda l, r: None
             else:
                 get_hw_pose = self.get_hw_pose
-                set_hw_motor = self.set_hw_motor
 
             x_new, y_new, heading_new, done, debug = self.current_controller.control_step(
-                self.x, self.y, self.heading, target, dt, self.simulation, get_hw_pose, set_hw_motor)
+                self.x, self.y, self.heading, target, dt, self.simulation, get_hw_pose)
             self.x, self.y, self.heading = x_new, y_new, angle_wrap(heading_new)
             if self.verbose_checkbox.isChecked():
                 print(debug)
@@ -367,4 +347,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
