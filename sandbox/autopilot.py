@@ -250,17 +250,28 @@ class RobotControlGUI(QWidget):
         self.log("Started tracking")
         self.updatePlot()
 
-    def stopTracking(self):
-        self.tracking_enabled = False
-        self.trajectory.clear()
-        self.current_wp_index = 0
-        self.x, self.y, self.heading = 0.0, 0.0, math.radians(90.0)
-        self.trajectory_line.set_data([], [])
-        self.ax.set_title("")
-        self.updatePlot()
-        if not self.simulation and hasattr(self.current_controller, 'stop_motors'):
-            self.current_controller.stop_motors()
-        self.log("Stopped tracking. View reset, waypoints preserved.")
+        def stopTracking(self):
+            self.tracking_enabled = False
+            self.trajectory.clear()
+            self.current_wp_index = 0
+            self.x, self.y, self.heading = 0.0, 0.0, math.radians(90.0)
+            self.trajectory_line.set_data([], [])
+            self.ax.set_title("")
+            self.updatePlot()
+
+            if not self.simulation:
+                if qwiic_otos is not None and 'sensor' in globals() and sensor is not None:
+                    try:
+                        sensor.resetTracking()
+                        sensor.setPosition(0, 0, 0)  # Reset position to (0,0)
+                        self.log("Hardware odometry reset to (0,0,90°)")
+                    except Exception as e:
+                        self.log(f"Failed to reset OTOS sensor: {e}")
+                if hasattr(self.current_controller, 'stop_motors'):
+                    self.current_controller.stop_motors()
+
+            self.log("Stopped tracking. View reset, odometery sensor reset.")
+
 
     # --- Hardware functions ---
     def get_hw_pose(self):
