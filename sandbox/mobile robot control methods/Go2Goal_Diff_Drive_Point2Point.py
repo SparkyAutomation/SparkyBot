@@ -57,8 +57,11 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
         heading_new = angle_wrap(heading + w * dt)
         stop_motors()
     else:
-        set_left_motor(left_speed)
-        set_right_motor(right_speed)
+        if done:
+            stop_motors()
+        else:
+            set_left_motor(left_speed)
+            set_right_motor(right_speed)
         x_new, y_new, heading_new = get_hw_pose()
 
     debug = {

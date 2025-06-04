@@ -69,11 +69,12 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
     pos_threshold = 5 if is_sim else 30  # mm
     heading_threshold = math.radians(5)  # radians (~5 deg)
 
-    # Check if done (both position and heading aligned)
-    done = (distance < pos_threshold) and (abs(dtheta) < heading_threshold)
+    position_done = distance < pos_threshold
+    heading_done = abs(dtheta) < heading_threshold
+    done = position_done and heading_done
 
     # Translational velocity
-    if distance > pos_threshold:
+    if not position_done:
         angle_to_goal = math.atan2(dy, dx)
         velocity = min(K_P * distance, V_MAX)
         if velocity < MIN_VELOCITY:
@@ -84,14 +85,11 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
         vx = vy = 0
 
     # Angular velocity
-    if abs(dtheta) > heading_threshold:
+    if not heading_done:
         w = K_THETA * dtheta
         w = max(min(w, W_MAX), -W_MAX)
     else:
         w = 0
-
-    if done:
-        vx = vy = w = 0
 
     if is_sim:  # simulation mode
         if not done:

@@ -67,11 +67,14 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
         stop_motors()
         left_speed = right_speed = None
     else:
-        # Hardware control
-        left_speed = int(max(min(v - w * L / 2, V_MAX), -V_MAX))
-        right_speed = int(max(min(v + w * L / 2, V_MAX), -V_MAX))
-        set_left_motor(left_speed)
-        set_right_motor(right_speed)
+        if done:
+            stop_motors()
+            left_speed = right_speed = 0
+        else:
+            left_speed = int(max(min(v - w * L / 2, V_MAX), -V_MAX))
+            right_speed = int(max(min(v + w * L / 2, V_MAX), -V_MAX))
+            set_left_motor(left_speed)
+            set_right_motor(right_speed)
         x_new, y_new, heading_new = get_hw_pose()
 
     debug = {
