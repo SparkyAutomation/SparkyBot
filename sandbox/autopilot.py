@@ -263,7 +263,7 @@ class RobotControlGUI(QWidget):
             if qwiic_otos is not None and 'sensor' in globals() and sensor is not None:
                 try:
                         sensor.resetTracking()
-                        sensor.setPosition(0, 0, 0)  # Reset position to (0,0)
+                        #sensor.setPosition(0, 0)  # Reset position to (0,0)
                         self.log("Hardware odometry reset to (0,0,90°)")
                 except Exception as e:
                         self.log(f"Failed to reset OTOS sensor: {e}")
@@ -357,3 +357,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
