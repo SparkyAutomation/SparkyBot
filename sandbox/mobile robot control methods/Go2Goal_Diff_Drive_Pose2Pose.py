@@ -38,7 +38,7 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
         x_new, y_new, heading_new, done, debug
     """
     # Goal pose
-    xT, yT, thetaT = waypoint['x'], waypoint['y'], waypoint['theta']
+    xT, yT, theta = waypoint['x'], waypoint['y'], waypoint['theta']
 
     # Errors
     dx = xT - x
@@ -46,7 +46,8 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
     rho = math.hypot(dx, dy)                      # Distance to target
     phi = math.atan2(dy, dx)
     alpha = angle_wrap(phi - heading)             # Heading to target
-    beta = angle_wrap(thetaT - phi)               # Final orientation error
+    beta = angle_wrap(theta - phi)               # Final orientation error
+    #print(theta, heading, phi)
 
     # Directional control
     v = V_MAX if abs(alpha) < math.pi / 2 else -V_MAX
@@ -56,7 +57,7 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
     # Completion condition
     position_threshold = 5 if is_sim else 30
     heading_threshold = math.radians(10)
-    done = (rho < position_threshold) and (abs(angle_wrap(thetaT - heading)) < heading_threshold)
+    done = (rho < position_threshold) and (abs(angle_wrap(theta - heading)) < heading_threshold)
 
     if is_sim:
         # Euler integration using unicycle model
@@ -79,7 +80,7 @@ def control_step(x, y, heading, waypoint, dt, is_sim, get_hw_pose):
         'heading': round(math.degrees(heading), 2),
         'xT': xT,
         'yT': yT,
-        'thetaT': round(math.degrees(thetaT), 2),
+        'theta': round(math.degrees(theta), 2),
         'rho': round(rho, 2),
         'alpha': round(math.degrees(alpha), 2),
         'beta': round(math.degrees(beta), 2),
