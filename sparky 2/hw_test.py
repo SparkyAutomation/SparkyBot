@@ -6,7 +6,6 @@ bot = Sparky(com="/dev/ttyUSB0", debug = True)
 bot.create_receive_threading()          # Start the receive thread to parse incoming data
 time.sleep(0.5)                         # Give it some time to fill sensor values
 
-
 print("Motor test")
 bot.set_motor(50, 0, 0, 0)
 time.sleep(0.5)                        
@@ -32,3 +31,9 @@ time.sleep(1)
 bot.set_led_pattern(6, 5, 3)
 time.sleep(5)
 bot.set_led_pattern(0, 5, 3)
+'''
+while (True):
+    yaw_deg = bot.get_yaw_roll_pitch(True)[0]
+    print(yaw_deg)
+    time.sleep(0.05)
+'''
